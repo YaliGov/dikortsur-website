@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>צור קשר – צור גוברין</title>
+    <link rel="stylesheet" href="%20styles.css"/>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="container">
+        <h1 class="site-title">דיקור סיני – צור גוברין</h1>
+    </div>
+</header>
+
+<nav class="navbar">
+    <div class="container navbar-inner">
+        <a href="index.html">דף הבית</a>
+        <a href="refoa_sinit.html">מה זה רפואה סינית?</a>
+        <a href="about.html">אודות</a>
+        <a class="active" href="contact.html">צור קשר</a>
+    </div>
+</nav>
+
+<main class="main" id = "page">
+    <div class="container stack">
+        <h2 class="page-title">צור קשר</h2>
+
+        <section class="card stack">
+            <p class="muted">השאר פרטים ונחזור אליך.</p>
+
+            <form class="stack" action="https://formspree.io/f/maqdylkv" method="POST">
+                <div class="stack">
+                    <label for="name"><strong>שם מלא</strong></label>
+                    <input class="input" id="name" name="name" type="text" placeholder="לדוגמה: יוסי כהן" required />
+                </div>
+
+                <div class="grid-2">
+                    <div class="stack">
+                        <label for="phone"><strong>טלפון</strong></label>
+                        <input class="input" id="phone" name="phone" type="tel" placeholder="05X-XXXXXXX" />
+                    </div>
+
+                    <div class="stack">
+                        <label for="email"><strong>אימייל</strong></label>
+                        <input class="input" id="email" name="email" type="email" placeholder="name@email.com" />
+                    </div>
+                </div>
+
+                <div class="stack">
+                    <label for="msg"><strong>הודעה</strong></label>
+                    <textarea class="textarea" id="msg" name="message" placeholder="במה נוכל לעזור?"></textarea>
+                </div>
+
+                <button class="btn" type="submit">שליחה</button>
+            </form>
+        </section>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="container">© דיקור סיני – צור גוברין</div>
+</footer>
+
+</body>
+</html>
