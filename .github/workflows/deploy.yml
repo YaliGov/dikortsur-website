@@ -1,0 +1,27 @@
+name: Deploy website to server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          port: 443
+          script: |
+            cd /var/www/html
+            git pull origin main || true
+            cp -r $GITHUB_WORKSPACE/* /var/www/html/
+            sudo chown -R www-data:www-data /var/www/html
