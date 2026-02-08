@@ -2,34 +2,37 @@ name: Deploy website to server
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Copy site files to server
+      # STEP 1: Upload files to server (no sudo here)
+      - name: Upload site via SCP to /home/deploy/site
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
+          username: deploy
           key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          source: "index.html,about.html,contact.html,refoa_sinit.html,styles.css"
-          target: "/var/www/html"
-          overwrite: true
+          port: 443
+          source: "."
+          target: "/home/deploy/site"
+          rm: true
 
-      - name: Fix permissions
+      # STEP 2: Publish to web root using sudo (runs on the server)
+      - name: Publish to /var/www/html
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
+          username: deploy
           key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
+          port: 443
           script: |
+            sudo rm -rf /var/www/html/*
+            sudo cp -r /home/deploy/site/* /var/www/html/
+            sudo rm -rf /var/www/html/.git /var/www/html/.github /var/www/html/.idea
             sudo chown -R www-data:www-data /var/www/html
