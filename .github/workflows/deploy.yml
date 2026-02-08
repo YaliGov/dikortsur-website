@@ -13,7 +13,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Deploy via SSH
+      - name: Copy site files to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "index.html,about.html,contact.html,refoa_sinit.html,styles.css"
+          target: "/var/www/html"
+          overwrite: true
+
+      - name: Fix permissions
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -21,8 +32,4 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            set -e
-            sudo rm -rf /var/www/html/*
-            sudo cp -r $GITHUB_WORKSPACE/* /var/www/html/
-            sudo rm -rf /var/www/html/.git /var/www/html/.github
             sudo chown -R www-data:www-data /var/www/html
