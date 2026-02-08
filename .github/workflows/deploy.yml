@@ -21,6 +21,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
+            set -e
             sudo rm -rf /var/www/html/*
             sudo cp -r $GITHUB_WORKSPACE/* /var/www/html/
+            sudo rm -rf /var/www/html/.git /var/www/html/.github
             sudo chown -R www-data:www-data /var/www/html
