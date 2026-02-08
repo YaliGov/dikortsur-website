@@ -10,18 +10,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER }}
-          key: ${{ secrets.DEPLOY_KEY }}
-          port: 443
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           script: |
-            cd /var/www/html
-            git pull origin main || true
-            cp -r $GITHUB_WORKSPACE/* /var/www/html/
+            sudo rm -rf /var/www/html/*
+            sudo cp -r $GITHUB_WORKSPACE/* /var/www/html/
             sudo chown -R www-data:www-data /var/www/html
