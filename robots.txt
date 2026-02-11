@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dikortsur.duckdns.org/sitemap.xml
