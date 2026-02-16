@@ -283,3 +283,7 @@ form .btn { margin-top: 6px; }
     font-size: 14px;
     line-height: 1.35;
 }
+
+.hidden {
+    display: none !important;
+}
