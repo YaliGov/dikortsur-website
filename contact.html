@@ -75,42 +75,44 @@
 </footer>
 
 <script>
-    
-    const form = document.getElementById("contactForm");
-    const successBox = document.getElementById("successBox");
+    (() => {
+        const form = document.getElementById("contactForm");
+        if (!form) return;
 
-    form.addEventListener("submit", async function (e) {
-        e.preventDefault();
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
 
-        successBox.classList.add("hidden");
+            const successBox = document.getElementById("successBox");
+            if (successBox) successBox.classList.add("hidden");
 
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
 
-        try {
-            const res = await fetch("/api/contact", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data)
-            });
+            try {
+                const res = await fetch("/api/contact", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data),
+                });
 
-            const result = await res.json();
+                const result = await res.json();
 
-            if (result.ok) {
-                form.reset();
-                successBox.classList.remove("hidden");
-
-                // הסתרה אוטומטית אחרי 4 שניות
-                setTimeout(() => {
-                    successBox.classList.add("hidden");
-                }, 4000);
-            } else {
-                alert("שגיאה בשליחה");
+                if (result.ok) {
+                    form.reset();
+                    if (successBox) {
+                        successBox.classList.remove("hidden");
+                        setTimeout(() => successBox.classList.add("hidden"), 4000);
+                    } else {
+                        alert("ההודעה נשלחה בהצלחה!");
+                    }
+                } else {
+                    alert(result.error || "שגיאה בשליחה");
+                }
+            } catch (err) {
+                alert("תקלה בחיבור לשרת");
             }
-        } catch (err) {
-            alert("תקלה בחיבור לשרת");
-        }
-    });
+        });
+    })();
 </script>
 <div id="successBox" class="success-box hidden">
     <div class="checkmark">✓</div>
