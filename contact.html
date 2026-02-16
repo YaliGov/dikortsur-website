@@ -75,27 +75,39 @@
 </footer>
 
 <script>
-    document.querySelector("form").addEventListener("submit", async function(e) {
+    const form = document.getElementById("contactForm");
+    const successBox = document.getElementById("successBox");
+
+    form.addEventListener("submit", async function (e) {
         e.preventDefault();
 
-        const formData = new FormData(this);
+        successBox.classList.add("hidden");
+
+        const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
 
-        const res = await fetch("/api/contact", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
-        });
+        try {
+            const res = await fetch("/api/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
 
-        const result = await res.json();
+            const result = await res.json();
 
-        if (result.ok) {
-            document.getElementById("successBox").classList.remove("hidden");
-            this.reset();
-        } else {
-            alert("שגיאה בשליחה");
+            if (result.ok) {
+                form.reset();
+                successBox.classList.remove("hidden");
+
+                // הסתרה אוטומטית אחרי 4 שניות
+                setTimeout(() => {
+                    successBox.classList.add("hidden");
+                }, 4000);
+            } else {
+                alert("שגיאה בשליחה");
+            }
+        } catch (err) {
+            alert("תקלה בחיבור לשרת");
         }
     });
 </script>
