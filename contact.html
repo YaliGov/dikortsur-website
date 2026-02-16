@@ -92,13 +92,19 @@
         const result = await res.json();
 
         if (result.ok) {
-            alert("ההודעה נשלחה בהצלחה!");
+            document.getElementById("successBox").classList.remove("hidden");
             this.reset();
         } else {
             alert("שגיאה בשליחה");
         }
     });
 </script>
-
+<div id="successBox" class="success-box hidden">
+    <div class="checkmark">✓</div>
+    <div class="success-text">
+        <strong>ההודעה נשלחה בהצלחה</strong><br>
+        נחזור אליך בהקדם
+    </div>
+</div>
 </body>
 </html>
