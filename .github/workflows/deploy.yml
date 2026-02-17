@@ -18,7 +18,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: deploy
           key: ${{ secrets.SSH_KEY }}
-          port: 443
+          port: 22
           source: "."
           target: "/home/deploy/site"
           rm: true
@@ -30,7 +30,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: deploy
           key: ${{ secrets.SSH_KEY }}
-          port: 443
+          port: 22
           script: |
             sudo rm -rf /var/www/html/*
             sudo cp -r /home/deploy/site/* /var/www/html/
